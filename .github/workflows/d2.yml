@@ -1,0 +1,35 @@
+name: Generate Diagrams
+
+on:
+  push:
+    paths:
+      - '**.d2'
+      - '.github/workflows/d2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  generate-diagrams:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install D2
+        run: |
+          curl -fsSL https://d2lang.com/install.sh | sh -s --
+
+      - name: Generate diagrams
+        run: |
+          for file in $(find . -name '*.d2'); do
+            d2 --theme 0 "$file" "${file%.d2}.svg"
+          done
+
+      - name: Commit diagrams
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add *.svg
+          git commit -m "Generate diagrams" || echo "No changes to commit"
+          git push

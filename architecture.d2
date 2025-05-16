@@ -1,0 +1,64 @@
+direction: right
+
+title: Cross-Account Access to OpenSearch Serverless {
+  near: top-center
+  shape: text
+  style: {
+    font-size: 29
+    bold: true
+    underline: false
+  }
+}
+
+# Define the AWS accounts as containers
+ingestion: "AWS Account: Ingestion" {
+  style.fill: "#FFEBCC"
+  style.stroke: "#FF9900"
+
+  # Define resources in the ingestion account
+  lambda: "Lambda Function" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Lambda_light-bg.svg
+    style.multiple: true
+  }
+
+  vpc_endpoints: "VPC Endpoints" {
+    shape: rectangle
+    style.stroke-dash: 5
+
+    endpoint1: "OpenSearch VPC Endpoint" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC_Endpoints_light-bg.svg
+    }
+
+    endpoint2: "STS VPC Endpoint" {
+      shape: image
+      icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC_Endpoints_light-bg.svg
+    }
+  }
+}
+
+search: "AWS Account: Search" {
+  style.fill: "#E1F5FE"
+  style.stroke: "#0097A7"
+
+  # Define resources in the search account
+  opensearch: "OpenSearch Serverless Collection" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FAnalytics%2FAmazon-Elasticsearch-Service.svg
+    style.multiple: true
+  }
+
+  iam_role: "IAM Role" {
+    shape: image
+    icon: https://icons.terrastruct.com/aws%2FSecurity%2C%20Identity%2C%20&%20Compliance%2FAWS-Identity-and-Access-Management-IAM_Role_light-bg.svg
+  }
+
+  opensearch -> iam_role: "allows access" {
+    style.stroke-dash: 5
+  }
+}
+
+# Cross-account connection
+ingestion.lambda -> ingestion.vpc_endpoints.endpoint1 -> search.opensearch: "ingests data"
+ingestion.lambda -> ingestion.vpc_endpoints.endpoint2 -> search.iam_role: "assumes"

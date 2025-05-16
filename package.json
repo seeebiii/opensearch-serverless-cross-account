@@ -13,13 +13,16 @@
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "@types/node": "22.7.9",
+    "aws-cdk": "2.1014.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
-    "aws-cdk": "2.1014.0",
     "ts-node": "^10.9.2",
     "typescript": "~5.6.3"
   },
   "dependencies": {
+    "@aws-sdk/credential-providers": "^3.806.0",
+    "@opensearch-project/opensearch": "^3.5.1",
+    "@types/aws-lambda": "^8.10.149",
     "aws-cdk-lib": "2.194.0",
     "constructs": "^10.0.0"
   }
