@@ -9,6 +9,8 @@ The setup is split in two accounts:
 - **ingestion account:** a Lambda Function that ingests data from certain sources (DynamoDB, S3, ...) to an OpenSearch Serverless collection in a different account. The Lambda Function is placed in a VPC and assumes an IAM role in the search account to write data to the OpenSearch Serverless collection by leveraging a VPC endpoint.
 - **search account:** an OpenSearch Serverless collection that allows [network access](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-network.html) from a VPC endpoint and [data access](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-data-access.html) for an IAM role.
 
+> 💡 You can use the same setup to read from an OpenSearch Serverless collection, i.e. query data. Instead of having an **ingestion account**, just replace it with a **read account** and let your Lambda Function perform queries against OpenSearch (but consider the [supported API operations](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-genref.html#serverless-operations)).
+
 ## Deployment
 
 The setup unfortunately requires step-wise deployments because the resources have cyclic dependencies.
